@@ -9,36 +9,19 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/influxdata/toml"
+	"github.com/influxdata/telegraf/internal/config"
 )
 
-type buildConfig struct {
-	Plugins struct {
-		Input  []string
-		Output []string
-	}
-}
-
 func main() {
-	configFile, err := os.Open("build.toml")
+	config = config.NewConfig()
+	err := config.LoadDirectory()
+
 	if err != nil {
 		die(err)
 	}
 
-	defer configFile.Close()
-
-	buf, err := ioutil.ReadAll(configFile)
-	if err != nil {
-		die(err)
-	}
-
-	var config buildConfig
-	if err := toml.Unmarshal(buf, &config); err != nil {
-		die(err)
-	}
-
-	inputPlugins := config.Plugins.Input
-	outputPlugins := config.Plugins.Output
+	inputPlugins := config.Inputs
+	outputPlugins := config.Outputs
 
 	if len(inputPlugins) == 0 {
 		inputPlugins, err = getAllPlugins("input")
