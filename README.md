@@ -12,6 +12,10 @@ You need Docker
 
 ## Getting Started
 
+### Telegraf Config
+
+You should have a local directory in the root of your build context called `telegraf` with your configuration. This would be what you have in `/etc/telegraf/` on any other deployment.
+
 ### Dockerfile
 
 Provide a Dockerfile. You can use any base layer you want, even scratch. I'm using Alpine.
