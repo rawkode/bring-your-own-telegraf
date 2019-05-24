@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"text/template"
@@ -50,23 +48,6 @@ func main() {
 	})
 }
 
-func getAllPlugins(directory string) ([]string, error) {
-	plugins, err := ioutil.ReadDir(fmt.Sprintf("./plugins/%q/", directory))
-
-	if err != nil {
-		log.Fatal(err)
-		return nil, err
-	}
-
-	var directoryNames []string
-
-	for _, directoryName := range plugins {
-		directoryNames = append(directoryNames, directoryName.Name())
-	}
-
-	return directoryNames, nil
-}
-
 func die(err error) {
 	if err != nil {
 		log.Fatal(err)
@@ -81,9 +62,7 @@ package all
 
 import (
 {{- range .Plugins }}
-	{{if ne .Name "all"}}
-	_ "github.com/influxdata/telegraf/plugins/inputs/{{ .Name }}"
-	{{- end }}
+    _ "github.com/influxdata/telegraf/plugins/inputs/{{ .Config.Name }}"
 {{- end }}
 )
 `))
