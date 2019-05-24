@@ -1,5 +1,4 @@
-// +build ignoreI
-package gen
+package main
 
 import (
 	"fmt"
@@ -10,29 +9,19 @@ import (
 	"time"
 
 	"github.com/influxdata/telegraf/internal/config"
+	"github.com/influxdata/telegraf/internal/models"
 )
 
 func main() {
-	pixel
-	config = config.NewConfig()
-	err := config.LoadDirectory()
+	configuration := config.NewConfig()
+	err := configuration.LoadConfig("")
 
 	if err != nil {
 		die(err)
 	}
 
-	inputPlugins := config.Inputs
-	outputPlugins := config.Outputs
-
-	if len(inputPlugins) == 0 {
-		inputPlugins, err = getAllPlugins("input")
-		die(err)
-	}
-
-	if len(outputPlugins) == 0 {
-		outputPlugins, err = getAllPlugins("input")
-		die(err)
-	}
+	inputPlugins := configuration.Inputs
+	outputPlugins := configuration.Outputs
 
 	allInputs, err := os.Create("../plugins/inputs/all/all.go")
 	die(err)
@@ -43,7 +32,7 @@ func main() {
 	defer allOutputs.Close()
 
 	allPluginsTemplate.Execute(allInputs, struct {
-		Plugins   []string
+		Plugins   []*models.RunningInput
 		Timestamp time.Time
 	}{
 		Plugins:   inputPlugins,
@@ -51,7 +40,7 @@ func main() {
 	})
 
 	allPluginsTemplate.Execute(allOutputs, struct {
-		Plugins   []string
+		Plugins   []*models.RunningOutput
 		Timestamp time.Time
 	}{
 		Plugins:   outputPlugins,
