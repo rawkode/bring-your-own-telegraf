@@ -1,5 +1,5 @@
 // +build ignoreI
-package gen
+package telegraf
 
 import (
 	"fmt"
