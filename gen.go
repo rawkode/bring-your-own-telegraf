@@ -10,6 +10,8 @@ import (
 
 	"github.com/influxdata/telegraf/internal/config"
 	"github.com/influxdata/telegraf/internal/models"
+	_ "github.com/influxdata/telegraf/plugins/inputs/all"
+	_ "github.com/influxdata/telegraf/plugins/outputs/all"
 )
 
 func main() {
