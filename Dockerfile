@@ -12,6 +12,7 @@ ONBUILD WORKDIR /go/src/github.com/influxdata/telegraf
 ONBUILD RUN make deps
 
 ONBUILD COPY telegraf /etc/telegraf
+ONBUILD RUN mkdir /go/src/github.com/influxdata/telegraf/gen
 ONBUILD RUN cp /code/gen.go /go/src/github.com/influxdata/telegraf/gen/gen.go
 ONBUILD RUN go run ./gen/gen.go
 ONBUILD RUN make static
