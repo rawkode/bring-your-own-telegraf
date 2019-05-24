@@ -25,11 +25,11 @@ func main() {
 	inputPlugins := configuration.Inputs
 	outputPlugins := configuration.Outputs
 
-	allInputs, err := os.Create("../plugins/inputs/all/all.go")
+	allInputs, err := os.Create("./plugins/inputs/all/all.go")
 	die(err)
 	defer allInputs.Close()
 
-	allOutputs, err := os.Create("../plugins/outputs/all/all.go")
+	allOutputs, err := os.Create("./plugins/outputs/all/all.go")
 	die(err)
 	defer allOutputs.Close()
 
@@ -51,7 +51,7 @@ func main() {
 }
 
 func getAllPlugins(directory string) ([]string, error) {
-	plugins, err := ioutil.ReadDir(fmt.Sprintf("../plugins/%q/", directory))
+	plugins, err := ioutil.ReadDir(fmt.Sprintf("./plugins/%q/", directory))
 
 	if err != nil {
 		log.Fatal(err)
