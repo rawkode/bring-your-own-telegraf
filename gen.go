@@ -66,7 +66,7 @@ package all
 
 import (
 {{- range .Plugins }}
-    _ "github.com/influxdata/telegraf/plugins/{{ .PluginType }}/{{ .Config.Name }}"
+    _ "github.com/influxdata/telegraf/plugins/{{ $.PluginType }}/{{ .Config.Name }}"
 {{- end }}
 )
 `))
