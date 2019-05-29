@@ -32,19 +32,23 @@ func main() {
 	defer allOutputs.Close()
 
 	allPluginsTemplate.Execute(allInputs, struct {
-		Plugins   []*models.RunningInput
-		Timestamp time.Time
+		PluginType string
+		Plugins    []*models.RunningInput
+		Timestamp  time.Time
 	}{
-		Plugins:   inputPlugins,
-		Timestamp: time.Now(),
+		PluginType: "inputs",
+		Plugins:    inputPlugins,
+		Timestamp:  time.Now(),
 	})
 
 	allPluginsTemplate.Execute(allOutputs, struct {
-		Plugins   []*models.RunningOutput
-		Timestamp time.Time
+		PluginType string
+		Plugins    []*models.RunningOutput
+		Timestamp  time.Time
 	}{
-		Plugins:   outputPlugins,
-		Timestamp: time.Now(),
+		PluginType: "outputs",
+		Plugins:    outputPlugins,
+		Timestamp:  time.Now(),
 	})
 }
 
@@ -62,7 +66,7 @@ package all
 
 import (
 {{- range .Plugins }}
-    _ "github.com/influxdata/telegraf/plugins/inputs/{{ .Config.Name }}"
+    _ "github.com/influxdata/telegraf/plugins/{{ .PluginType }}/{{ .Config.Name }}"
 {{- end }}
 )
 `))
