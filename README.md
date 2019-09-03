@@ -1,6 +1,6 @@
 # Build Your Own Telegraf
 
-Telegraf isn't a huge binary, it's under 100MiB. However, we can make that smaller.
+Telegraf isn't a huge binary, it's under 100MiB (Docker Images are rougly 250MiB). However, we can make that smaller.
 
 Telegraf ships with A LOT of plugins for supporting all of our users use-cases, but each individidual user only needs around 4/5 plugins.
 
