@@ -15,4 +15,4 @@ ONBUILD COPY telegraf /etc/telegraf
 ONBUILD RUN mkdir /go/src/github.com/influxdata/telegraf/gen
 ONBUILD RUN cp /code/gen.go /go/src/github.com/influxdata/telegraf/gen/gen.go
 ONBUILD RUN go run ./gen/gen.go
-ONBUILD RUN make static
+ONBUILD RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -s -w ./cmd/telegraf
