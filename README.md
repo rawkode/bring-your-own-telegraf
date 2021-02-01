@@ -32,4 +32,4 @@ ENTRYPOINT [ "/bin/telegraf" ]
 
 ### Build Docker Image
 
-`docker image build --tag your_image_name --build-arg VERSION=1.10 .`
+`docker image build --tag your_image_name --build-arg VERSION=1.15 .`
