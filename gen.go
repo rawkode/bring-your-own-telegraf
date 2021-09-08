@@ -8,8 +8,10 @@ import (
 
 	"github.com/influxdata/telegraf/config"
 	"github.com/influxdata/telegraf/models"
+	_ "github.com/influxdata/telegraf/plugins/aggregators/all"
 	_ "github.com/influxdata/telegraf/plugins/inputs/all"
 	_ "github.com/influxdata/telegraf/plugins/outputs/all"
+	_ "github.com/influxdata/telegraf/plugins/processors/all"
 )
 
 func main() {
@@ -22,12 +24,22 @@ func main() {
 
 	inputPlugins := configuration.Inputs
 	outputPlugins := configuration.Outputs
+	processorPlugins := configuration.Processors
+	aggregatorPlugins := configuration.Aggregators
 
 	allInputs, err := os.Create("./plugins/inputs/all/all.go")
 	die(err)
 	defer allInputs.Close()
 
 	allOutputs, err := os.Create("./plugins/outputs/all/all.go")
+	die(err)
+	defer allOutputs.Close()
+
+	allProcessors, err := os.Create("./plugins/processors/all/all.go")
+	die(err)
+	defer allOutputs.Close()
+
+	allAggregators, err := os.Create("./plugins/aggregators/all/all.go")
 	die(err)
 	defer allOutputs.Close()
 
@@ -48,6 +60,26 @@ func main() {
 	}{
 		PluginType: "outputs",
 		Plugins:    outputPlugins,
+		Timestamp:  time.Now(),
+	})
+
+	allPluginsTemplate.Execute(allProcessors, struct {
+		PluginType string
+		Plugins    models.RunningProcessors
+		Timestamp  time.Time
+	}{
+		PluginType: "processors",
+		Plugins:    processorPlugins,
+		Timestamp:  time.Now(),
+	})
+
+	allPluginsTemplate.Execute(allAggregators, struct {
+		PluginType string
+		Plugins    []*models.RunningAggregator
+		Timestamp  time.Time
+	}{
+		PluginType: "aggregators",
+		Plugins:    aggregatorPlugins,
 		Timestamp:  time.Now(),
 	})
 }
